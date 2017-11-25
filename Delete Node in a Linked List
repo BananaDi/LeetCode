@@ -8,4 +8,10 @@
  */
 class Solution {
 public:
-    void deleteNode(ListNode* node) {
+    void deleteNode(ListNode* node) {      
+      if (!node -> next || !node) return; 
+      node -> val = node -> next -> val;
+      node -> next = node -> next -> next;
+        
+    }
+};
