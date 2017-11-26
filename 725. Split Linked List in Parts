@@ -1,0 +1,72 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<ListNode*> splitListToParts(ListNode *root, int k) {
+        vector<ListNode*> parts(k, nullptr);
+        
+        int l = length(root);
+        int n = l / k, r = l % k;
+        
+        ListNode *node = root, *p = nullptr;
+        
+        for (int i = 0; i < k; i++, r--){
+            parts[i] = node;
+            for (int j = 0; j < n + (r > 0); j++ ){
+                p = node;
+                node = node -> next;
+            }
+            if (p) p -> next = nullptr; 
+        }
+        return parts;
+    }
+
+private:
+    int length(ListNode* node){
+        int len = 0;
+        while(node != nullptr){
+            node = node -> next;
+            len++;
+        }
+        return len;
+    }
+        
+};
+
+
+class Solution {
+public:
+    vector<ListNode*> splitListToParts(ListNode *root, int k) {
+        if (k == 1) return vector<ListNode*>({root});
+     
+        vector<ListNode*> res(k, NULL);
+        int total_len = getLen(root);
+        int per_len = total_len / k;
+        int remainder = total_len % k;
+        int idx = 0, tmp = 0;
+        while (idx < k) {
+            tmp = per_len + (idx < remainder ? 1 : 0);
+            if (tmp == 0) {
+                res[idx++] = NULL;
+                continue;
+            }
+            res[idx++] = root;
+            while (tmp != 1) {
+                root = root->next;
+                --tmp;
+            }
+            ListNode *next = root->next;
+            root->next = NULL;
+            root = next;
+        }
+        return res;
+    }
+};
+
+    
