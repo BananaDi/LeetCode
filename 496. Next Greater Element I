@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {       
+        stack<int>stack;
+        unordered_map<int, int> m;
+        
+        for(int n : nums){
+            while(!stack.empty() && stack.top() < n){
+                m[stack.top()] = n;
+                stack.pop();
+            }
+            stack.push(n);
+        }
+        
+        vector<int>res;
+        for(int n : findNums){
+            res.push_back(m.count(n) ? m[n] : -1);
+        }
+        
+        return res; 
+    }
+};
