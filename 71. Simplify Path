@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string simplifyPath(string path) {
+        vector<string>stack;
+        string res,tmp;
+        stringstream ss(path);
+        
+        while(getline(ss, tmp, '/')){
+            if(tmp == "." || tmp == "") continue;
+            if(tmp == ".." && !stack.empty()) stack.pop_back();
+            else if(tmp != "..")stack.push_back(tmp);
+        }
+        
+        for(string word : stack){
+            res = res + "/" + word;
+        }
+        return stack.empty()? "/" : res;
+        
+    }
+};
