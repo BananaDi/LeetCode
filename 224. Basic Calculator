@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int calculate(string s) {
+        if (s.length() == 0) return 0;
+        
+        stack<int>opt;
+        stack<int>data;
+        int i = 0;
+        
+        while(i < s.size()){
+            while(i < s.size() && s[i] == ' ') i++;
+            
+            if (i == s.size()) break;
+            
+            if(s[i]== '+' || s[i] == '-' || s[i] == '('){
+                opt.push(s[i]);
+                i++;
+            }
+            else if(s[i] == ')'){
+                while (opt.top() != '('){
+                    int data1 = data.top(); data.pop();
+                    int data2 = data.top(); data.pop();
+                    if (opt.top() == '+') data.push(data2 + data1);
+                    else data.push(data2 - data1);
+                    opt.pop();
+                }
+                opt.pop();
+                
+                while((!opt.empty()) && (opt.top() != '(')){
+                    int data1 = data.top(); data.pop();
+                    int data2 = data.top(); data.pop();
+                    if (opt.top() == '+') data.push(data2 + data1);
+                    else data.push(data2 - data1);
+                    opt.pop();
+                }
+                i++;
+            }
+            else {
+                int n = 0;
+                while(i < s.size() && s[i] >= '0' && s[i] <= '9'){
+                    n = 10 * n + (s[i] - '0');
+                    i++;
+                }
+                data.push(n);
+                
+                while((!opt.empty()) && (opt.top() != '(')){
+                    int data1 = data.top(); data.pop();
+                    int data2 = data.top(); data.pop();
+                    if (opt.top() == '+') data.push(data2 + data1);
+                    else data.push(data2 - data1);
+                    opt.pop();
+                }
+            }
+        }
+        return data.top();       
+    }
+};
+
