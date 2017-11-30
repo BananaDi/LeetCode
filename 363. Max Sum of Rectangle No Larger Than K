@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        if(matrix.empty() || matrix[0].empty()) return 0;
+        
+        int row = matrix.size(), col = matrix[0].size();
+        int res = INT_MIN;
+        
+        for(int left = 0; left < col; ++left){
+            vector<int>sums(row, 0);
+            for(int right = left; right < col; ++right){
+                for(int i = 0; i < row; ++i){
+                    sums[i] += matrix[i][right];
+                }
+                
+                int curSum = 0, curMax = INT_MIN;
+                set<int>cur;
+                cur.insert(0);
+                for(int sum : sums){
+                    curSum += sum;
+                    set<int>::iterator it = cur.lower_bound(curSum - k);
+                    if (it != cur.end()) curMax = std::max(curMax, curSum - *it);
+                    cur.insert(curSum);
+                }
+                res = std::max(res, curMax);
+            }
+        }
+        return res;   
+    }
+};
